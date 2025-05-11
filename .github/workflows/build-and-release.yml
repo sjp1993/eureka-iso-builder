@@ -27,7 +27,9 @@ jobs:
 
       # Build ISO using Packer
       - name: Build ISO using Packer
-        run: packer build packer.json
+        run: |
+          set -e
+          packer build packer.json
 
       # Upload the ISO artifact
       - name: Upload ISO Artifact
@@ -36,6 +38,16 @@ jobs:
           name: eureka-iso
           path: output-eureka-ai-os/  # Ensure this matches the output_directory in packer.json
 
-      # (Optional) Notify completion
+      # Cleanup workspace to save runner space
+      - name: Cleanup Workspace
+        run: rm -rf output-eureka-ai-os/*
+
+      # Optional: Notify completion (example for Slack)
       - name: Notify completion
+        if: success()
         run: echo "ISO build and upload completed successfully!"
+
+      # Add a failure notification step (optional)
+      - name: Failure Notification
+        if: failure()
+        run: echo "ISO build failed. Check logs for details."
