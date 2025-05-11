@@ -21,7 +21,16 @@ jobs:
         with:
           packer-version: latest
 
-      # Validate Packer template
+      # Cache Packer dependencies
+      - name: Cache Packer
+        uses: actions/cache@v3
+        with:
+          path: ~/.packer
+          key: ${{ runner.os }}-packer-${{ hashFiles('**/packer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-packer-
+
+      # Validate the Packer template
       - name: Validate Packer template
         run: packer validate packer.json
 
@@ -31,23 +40,35 @@ jobs:
           set -e
           packer build packer.json
 
+      # Verify the ISO artifact
+      - name: Verify ISO artifact
+        run: |
+          if [ ! -f "output-eureka-ai-os/iso-file.iso" ]; then
+            echo "ISO file not found!"
+            exit 1
+          fi
+
       # Upload the ISO artifact
       - name: Upload ISO Artifact
         uses: actions/upload-artifact@v3
         with:
           name: eureka-iso
-          path: output-eureka-ai-os/  # Ensure this matches the output_directory in packer.json
+          path: output-eureka-ai-os/
 
       # Cleanup workspace to save runner space
       - name: Cleanup Workspace
         run: rm -rf output-eureka-ai-os/*
 
-      # Optional: Notify completion
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # Notify on success
       - name: Notify Completion
-        if: success()
-        run: echo "ISO build and upload completed successfully!"
+        if: ${{ success() }}
+        run: echo "✅ ISO build and upload completed successfully!"
 
-      # Add a failure notification step (optional)
-      - name: Failure Notification
-        if: failure()
-        run: echo "ISO build failed. Check logs for details."
+      # Notify on failure
+      - name: Notify Failure
+        if: ${{ failure() }}
+        run: echo "❌ ISO build failed. Please check the logs for details."
