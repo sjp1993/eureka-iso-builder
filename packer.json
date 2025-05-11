@@ -1,30 +1,32 @@
 {
-  "builders": [{
-    "type": "qemu",
-    "name": "ubuntu-live-builder",
-    
-    "iso_url": "http://releases.ubuntu.com/22.04/ubuntu-22.04-live-server-amd64.iso",
-    "iso_checksum": "sha256:3c73225a94ef27b87ffa596e47fa36a0f8f2de9c39e3b04c0e2b1a0e522bc0f3",
-    "output_directory": "output-eureka-ai-os",
-    "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
-    "disk_size": 20000,
-    "format": "raw",
-    "accelerator": "kvm",
-    "headless": true,
-    "boot_wait": "10s",
-    "boot_command": [
-      "<esc><wait>",
-      "set gfxpayload=1024x768<enter>",
-      "/install/vmlinuz auto ",
-      "console-setup/ask_detect=false ",
-      "console-setup/layoutcode=us ",
-      "locale=en_US ",
-      "hostname=eureka ",
-      "fb=false ",
-      "debconf/frontend=noninteractive ",
-      "initrd=/install/initrd.gz -- <enter>"
-    ]
-  }],
+  "builders": [
+    {
+      "type": "qemu",
+      "name": "ubuntu-live-builder",
+      "iso_url": "http://releases.ubuntu.com/22.04/ubuntu-22.04-live-server-amd64.iso",
+      "iso_checksum": "sha256:3c73225a94ef27b87ffa596e47fa36a0f8f2de9c39e3b04c0e2b1a0e522bc0f3",
+      "output_directory": "output-eureka-ai-os",
+      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+      "disk_size": 20000,
+      "format": "raw",
+      "accelerator": "kvm",
+      "headless": true,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<esc><wait>",
+        "set gfxpayload=1024x768<enter>",
+        "/install/vmlinuz auto ",
+        "console-setup/ask_detect=false ",
+        "console-setup/layoutcode=us ",
+        "locale=en_US ",
+        "hostname=eureka ",
+        "fb=false ",
+        "debconf/frontend=noninteractive ",
+        "initrd=/install/initrd.gz -- <enter>"
+      ],
+      "ssh_username": "ubuntu"
+    }
+  ],
   "provisioners": [
     {
       "type": "file",
