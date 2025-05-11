@@ -33,7 +33,7 @@ jobs:
 
       # Upload the ISO artifact
       - name: Upload ISO Artifact
-        uses: actions/upload-artifact@ecc5516821087666a672c0d280a0084ea6d9aafd
+        uses: actions/upload-artifact@v3
         with:
           name: eureka-iso
           path: output-eureka-ai-os/  # Ensure this matches the output_directory in packer.json
