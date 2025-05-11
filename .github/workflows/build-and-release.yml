@@ -33,7 +33,7 @@ jobs:
 
       # Upload the ISO artifact
       - name: Upload ISO Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@ecc5516821087666a672c0d280a0084ea6d9aafd
         with:
           name: eureka-iso
           path: output-eureka-ai-os/  # Ensure this matches the output_directory in packer.json
@@ -42,8 +42,8 @@ jobs:
       - name: Cleanup Workspace
         run: rm -rf output-eureka-ai-os/*
 
-      # Optional: Notify completion (example for Slack)
-      - name: Notify completion
+      # Optional: Notify completion
+      - name: Notify Completion
         if: success()
         run: echo "ISO build and upload completed successfully!"
 
