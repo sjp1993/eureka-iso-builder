@@ -7,7 +7,7 @@
     "output_directory": "output-eureka-ai-os",
     "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
     "disk_size": 20000,
-    "format": "iso",
+    "format": "raw",  // Fixed format
     "accelerator": "kvm",
     "headless": true,
     "boot_wait": "10s",
@@ -35,4 +35,4 @@
       "script": "scripts/bootstrap.sh"
     }
   ]
-}
+}o
