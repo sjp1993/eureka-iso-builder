@@ -3,7 +3,7 @@
     {
       "type": "qemu",
       "name": "ubuntu-live-builder",
-      "iso_url": "http://releases.ubuntu.com/22.04/ubuntu-22.04-live-server-amd64.iso",
+      "iso_url": "https://releases.ubuntu.com/jammy/ubuntu-22.04.2-live-server-amd64.iso",
       "iso_checksum": "sha256:3c73225a94ef27b87ffa596e47fa36a0f8f2de9c39e3b04c0e2b1a0e522bc0f3",
       "output_directory": "output-eureka-ai-os",
       "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
