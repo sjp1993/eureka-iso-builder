@@ -11,22 +11,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Set up Packer
       - name: Set up Packer
         uses: hashicorp/setup-packer@v2
         with:
           packer-version: latest
 
+      # Validate Packer template
       - name: Validate Packer template
         run: packer validate packer.json
 
+      # Build ISO using Packer
       - name: Build ISO using Packer
         run: packer build packer.json
 
+      # Upload the ISO artifact
       - name: Upload ISO Artifact
         uses: actions/upload-artifact@v3
         with:
           name: eureka-iso
           path: output-eureka-ai-os/  # Ensure this matches the output_directory in packer.json
+
+      # (Optional) Notify completion
+      - name: Notify completion
+        run: echo "ISO build and upload completed successfully!"
