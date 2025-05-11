@@ -1,0 +1,37 @@
+name: Build & Release Eureka ISO
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-iso:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y curl unzip qemu-system qemu-kvm libvirt-daemon-system libvirt-clients squashfs-tools xorriso
+
+      - name: Install Packer
+        run: |
+          curl -fsSL https://releases.hashicorp.com/packer/1.9.0/packer_1.9.0_linux_amd64.zip -o packer.zip
+          unzip packer.zip
+          sudo mv packer /usr/local/bin/
+          packer --version
+
+      - name: Build ISO
+        run: sudo packer build packer.json
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v\${{ github.run_number }}
+          name: Eureka AI OS v\${{ github.run_number }}
+          files: output-eureka-ai-os/eureka_ai_os.iso
+        env:
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
